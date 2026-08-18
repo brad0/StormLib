@@ -346,6 +346,10 @@ if (NOT WITH_BUNDLED_LIBTOMCRYPT)
         message(STATUS "Found libtomcrypt via pkg-config")
         target_link_libraries(${LIBRARY_NAME} PRIVATE PkgConfig::libtomcrypt)
     endif()
+    # Use the system's own tomcrypt.h instead of the bundled (vendored) copy,
+    # since the two can disagree on struct layouts (e.g. ltc_math_descriptor)
+    # across libtomcrypt versions, which is ABI-incompatible with the system .so.
+    target_compile_definitions(${LIBRARY_NAME} PRIVATE __SYS_LIBTOMCRYPT)
 else()
     message(STATUS "Using bundled libtomcrypt sources")
     set(SRC_ADDITIONAL_FILES ${SRC_ADDITIONAL_FILES} ${TOMCRYPT_FILES})
