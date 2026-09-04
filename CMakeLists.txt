@@ -359,19 +359,6 @@ if(WIN32)
     target_link_libraries(${LIBRARY_NAME} PRIVATE wininet)
 endif()
 
-if(CMAKE_SYSTEM_NAME MATCHES "(Free|Net|Open)BSD")
-    message(STATUS "Using BSD port")
-    target_compile_definitions(${LIBRARY_NAME} PRIVATE
-        O_LARGEFILE=0
-        stat64=stat
-        lstat64=lstat
-        lseek64=lseek
-        off64_t=off_t
-        fstat64=fstat
-        ftruncate64=ftruncate
-    )
-endif()
-
 target_sources(${LIBRARY_NAME} PRIVATE ${SRC_FILES} ${SRC_ADDITIONAL_FILES} ${STORM_DEF_FILES})
 if(WIN32)
     set_target_properties(${LIBRARY_NAME} PROPERTIES OUTPUT_NAME "StormLib")
